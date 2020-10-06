@@ -11,33 +11,35 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employeeArray = [];
 // Function takes input of role in team and use inquirer to gather information about that team member
 function inquirerCall(role) {
     inquirer
         .prompt(questions.generateQuestions(role))
         .then(function (response) {
-            // console.log(response);
-            // console.log(typeof response.answerRole);
 
             // Create objects for each team member
             if (role === "manager") {
-                const managerEl = new Manager(response.name, response.id, response.email, response.lastQ);
-                // console.log(managerEl);
-            } else if (role === "engineer") {
-                const engineerEl = new Engineer(response.name, response.id, response.email, response.lastQ);
-                // console.log(engineerEl);
-            } else if (role === "intern") {
-                const internEl = new Intern(response.name, response.id, response.email, response.lastQ);
-                // console.log(internEl);
-            } else {
+                employeeArray.push(new Manager(response.name, response.id, response.email, response.lastQ))
+            } 
+            else if (role === "engineer") {
+                employeeArray.push(new Engineer(response.name, response.id, response.email, response.lastQ));
+            } 
+            else if (role === "intern") {
+                employeeArray.push(new Intern(response.name, response.id, response.email, response.lastQ));
+            } 
+            else {
                 console.log("Please enter a valid parameter");
             }
             
             // If user finishes adding team member, then call render()
-            if (response.role === "I don't want to add any more team members") {
+            if (response.answerRole === "I don't want to add any more team members") {
+                // const htmlFile = render(employeeArray);
+                writeToFile(render(employeeArray));
                 return;
-            } else {
-                // Otherwise, keep asking questions
+            } 
+            // Otherwise, keep asking questions
+            else {
                 inquirerCall(response.answerRole);
             }
 
@@ -46,12 +48,23 @@ function inquirerCall(role) {
         .catch(error => {
             if (error.isTtyError) {
                 return console.log("Prompt couldn't be rendered in the current environment");
-            } else {
+            } 
+            else {
                 return console.log("Something else went wrong");
             }
         });
 }
 
+function writeToFile(htmlFile) {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        console.log('Directory does not exist');
+        fs.mkdirSync(OUTPUT_DIR);
+    } 
+    fs.writeFile(outputPath, htmlFile, function(err) {
+        if (err) throw err;
+        console.log("The file has been saved!");
+    })
+}
 
 inquirerCall("manager");
 // After the user has input all employees desired, call the `render` function (required
@@ -63,13 +76,3 @@ inquirerCall("manager");
 // `output` folder. You can use the variable `outputPath` above target this location.
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
