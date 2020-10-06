@@ -33,7 +33,7 @@ Note: you can click on email to send an email and click on GitHub username to br
 
 ![screenshot](./Assets/images/screenshot.png)
 
-Please checkout the [walk-through video](https://drive.google.com/file/d/1grNDqxTrBAIjLp4px6khDIoc4CK6CC0F/view) for demonstration.
+Please checkout the [walk-through video](https://drive.google.com/file/d/12UCauACthUg9P9jSqLKqAZRknDhaBvpO/view) for demonstration.
 
 
 ## License
