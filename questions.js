@@ -1,11 +1,9 @@
 const managerQuestions = [
-    "What is your manager's name?", 
+    "What is your manager's name?",
     "What is your manager's id?",
     "What is your manager's email?",
     "What is your manager's office number?"
 ];
-
-// const managerPromptNames = ["managerName", "managerId", "managerEmail", "managerOfficeNum"];
 
 const engineerQuestions = [
     "What is your engineer's name?",
@@ -23,21 +21,15 @@ const internQuestions = [
 
 const typeOfMemberQuestion = "What type of team member would you like to add?";
 
-// const questionKeys = {
-//     manager: "managerQuestions",
-//     engineer: "engineerQuestions",
-//     intern: "internQuestions",
-//     typeOfMember: "typeOfMemberQuestion"
-// }
-
 let promptQuestions = [];
 
-function generateInputQuestions(role) {
+function generateQuestions(role) {
+    
     let questions = [];
-    let promptNames = ["Name", "Id", "Email", "LastQ"];
+    let promptNames = ["name", "id", "email", "lastQ"];
 
     switch (role) {
-        case "manager": 
+        case "manager":
             questions = managerQuestions;
             break;
         case "engineer":
@@ -47,36 +39,25 @@ function generateInputQuestions(role) {
             questions = internQuestions;
             break;
         default:
-            console.log("Please enter correct input.");
+            return console.log("Please enter a valid input.");
     }
 
-    const newNames = promptNames.map(name => role + name);
-    
     for (let i = 0; i < questions.length; i++) {
         promptQuestions[i] = {
             type: "input",
             message: questions[i],
-            name: newNames[i]
+            name: promptNames[i]
         }
     }
-    // console.log(newNames);
-    return promptQuestions;
-}
 
-function generateListQuestions() {
-    promptQuestions = {
+    promptQuestions[questions.length] = {
         type: "list",
         message: typeOfMemberQuestion,
-        name: "answer",
-        choices: ["engineer", "intern"]
+        name: "answerRole",
+        choices: ["engineer", "intern", "I don't want to add any more team members"]
     };
-    
-    return promptQuestions;
-    
-}
-// generateInputQuestions("manager");
-// console.log(promptQuestions);
-// generateListQuestions();
-// console.log(promptQuestions);
 
-module.exports = promptQuestions;
+    return promptQuestions;
+}
+
+module.exports = { generateQuestions };

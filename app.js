@@ -11,14 +11,49 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// Write code to use inquirer to gather information about the development team members
-inquirer
-    .prompt(questions)
-    .then(function(response) {
-        console.log(response);
-    })
-// and to create objects for each team member (using the correct classes as blueprints!)
+// Function takes input of role in team and use inquirer to gather information about that team member
+function inquirerCall(role) {
+    inquirer
+        .prompt(questions.generateQuestions(role))
+        .then(function (response) {
+            // console.log(response);
+            // console.log(typeof response.answerRole);
 
+            // Create objects for each team member
+            if (role === "manager") {
+                const managerEl = new Manager(response.name, response.id, response.email, response.lastQ);
+                // console.log(managerEl);
+            } else if (role === "engineer") {
+                const engineerEl = new Engineer(response.name, response.id, response.email, response.lastQ);
+                // console.log(engineerEl);
+            } else if (role === "intern") {
+                const internEl = new Intern(response.name, response.id, response.email, response.lastQ);
+                // console.log(internEl);
+            } else {
+                console.log("Please enter a valid parameter");
+            }
+            
+            // If user finishes adding team member, then call render()
+            if (response.role === "I don't want to add any more team members") {
+                return;
+            } else {
+                // Otherwise, keep asking questions
+                inquirerCall(response.answerRole);
+            }
+
+        })
+        // Errors
+        .catch(error => {
+            if (error.isTtyError) {
+                return console.log("Prompt couldn't be rendered in the current environment");
+            } else {
+                return console.log("Something else went wrong");
+            }
+        });
+}
+
+
+inquirerCall("manager");
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
