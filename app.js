@@ -11,14 +11,16 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// Initiate empty array to be passed to render()
 const employeeArray = [];
+
 // Function takes input of role in team and use inquirer to gather information about that team member
 function inquirerCall(role) {
     inquirer
         .prompt(questions.generateQuestions(role))
         .then(function (response) {
 
-            // Create objects for each team member
+            // Create objects for each team member, then push to employeeArray
             if (role === "manager") {
                 employeeArray.push(new Manager(response.name, response.id, response.email, response.lastQ))
             } 
@@ -34,9 +36,10 @@ function inquirerCall(role) {
             
             // If user finishes adding team member, then call render()
             if (response.answerRole === "I don't want to add any more team members") {
-                // const htmlFile = render(employeeArray);
+
                 writeToFile(render(employeeArray));
                 return;
+
             } 
             // Otherwise, keep asking questions
             else {
@@ -55,24 +58,23 @@ function inquirerCall(role) {
         });
 }
 
+// Function takes input of htmlFile and save to team.html
 function writeToFile(htmlFile) {
+
+    // Check if the output folder exists
     if (!fs.existsSync(OUTPUT_DIR)) {
-        console.log('Directory does not exist');
+
+        // If not, create the output folder
         fs.mkdirSync(OUTPUT_DIR);
+
     } 
+
+    // Write htmlFile into provided filepath
     fs.writeFile(outputPath, htmlFile, function(err) {
         if (err) throw err;
         console.log("The file has been saved!");
     })
 }
 
+// Call inquirerCall with input "manager"
 inquirerCall("manager");
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
