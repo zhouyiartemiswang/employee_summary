@@ -1,0 +1,40 @@
+body {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FCF8EE;
+}
+
+.jumbotron {
+    background-color: #233D4D;
+}
+
+.card-header {
+    background-color: #FE7F2D;
+    color: #233D4D;
+    text-align: center;
+}
+
+.card-body {
+    background-color: #FCCA46;
+}
+
+.list-group-item {
+    background-color: #A1C181;
+    font-size: 1.1vw;
+}
+
+.list-group-item :hover {
+    color: white;
+}
+
+h1 {
+    font-size: 4vw;
+}
+
+h2 {
+    font-size: 1.5vw;
+}
+
+h3 {
+    font-size: 1.2vw;
+}
