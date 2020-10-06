@@ -1,4 +1,4 @@
-# Employee Profile Generator
+# Employee Profile Generator [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description 
 This project builds a Node CLI that takes in information about employees and generates an HTML webpage that displays summaries for each person. 
